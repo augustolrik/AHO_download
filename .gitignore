@@ -1,0 +1,15 @@
+# Genereret af scripts/generate-index.mjs og bygget igen ved hver Pages-udgivelse.
+/files.json
+/.site-dist/
+/.folder-style/
+
+# Operativsystem/editor-filer, som ikke skal vises for studerende.
+.DS_Store
+Thumbs.db
+desktop.ini
+ehthumbs.db
+~$*
+*.tmp
+*.temp
+*.part
+*.crdownload

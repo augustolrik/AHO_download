@@ -1,0 +1,3 @@
+Dette er en testfil til download-siden.
+
+Når denne mappe bliver synkroniseret med GitHub, kan de studerende hente filen fra siden.
