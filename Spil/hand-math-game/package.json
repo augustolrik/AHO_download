@@ -1,0 +1,14 @@
+{
+  "name": "hand-math-game",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Offline MediaPipe Hands math game",
+  "scripts": {
+    "serve": "python -m http.server 8080",
+    "check": "node --check app.js",
+    "test": "node tests/app.test.cjs"
+  },
+  "dependencies": {
+    "@mediapipe/hands": "^0.4.1675469240"
+  }
+}

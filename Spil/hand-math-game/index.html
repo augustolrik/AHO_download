@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="da">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0a1020" />
+    <title>Håndmatematikspil</title>
+    <link rel="stylesheet" href="styles.css?v=20260810-beatlives-1" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div class="brand-lockup">
+          <div class="brand-mark" aria-hidden="true">&#x2726;</div>
+          <div>
+            <p class="eyebrow">KAMERASPIL UDEN INTERNET</p>
+            <h1>Håndmatematik<span>spil</span></h1>
+          </div>
+        </div>
+        <div class="score-card" aria-label="Spillets point">
+          <span class="score-label">POINT</span>
+          <strong id="scoreValue">0</strong>
+          <span class="streak" id="streakValue">0 i træk</span>
+        </div>
+      </header>
+
+      <section class="mode-switch panel" aria-label="Vælg spil">
+        <div class="mode-copy">
+          <p class="eyebrow">VÆLG SPIL</p>
+          <strong>Hvad vil du øve?</strong>
+        </div>
+        <div class="mode-buttons" role="group" aria-label="Spiltilstand">
+          <button class="mode-button active" type="button" data-game-mode="hand-sign">
+            <span class="mode-icon" aria-hidden="true">✋</span>
+            <span><strong>Håndtegn</strong><small>Læs cifre med hånden</small></span>
+          </button>
+          <button class="mode-button" type="button" data-game-mode="beat-saber">
+            <span class="mode-icon" aria-hidden="true">⚔</span>
+            <span><strong>BeatSaber</strong><small>Skær de rigtige multipla</small></span>
+          </button>
+        </div>
+      </section>
+
+      <section class="game-grid">
+        <section class="camera-card panel" aria-label="Kamera og håndsporing">
+          <div class="camera-header">
+            <div>
+              <p class="eyebrow" id="cameraEyebrow">DIREKTE HÅNDSPORING</p>
+              <h2 id="cameraTitle">Vis dit svar</h2>
+            </div>
+            <div class="live-pill" id="cameraState" aria-live="polite"><i></i> Kamera slukket</div>
+          </div>
+
+          <div class="camera-stage" id="cameraStage">
+            <video id="inputVideo" autoplay muted playsinline></video>
+            <canvas id="overlayCanvas" aria-hidden="true"></canvas>
+            <div class="camera-placeholder" id="cameraPlaceholder">
+              <div class="camera-icon">&#x25C9;</div>
+              <p>Kamerabilledet vises her</p>
+              <small>Tillad kameraadgang, når browseren spørger.</small>
+            </div>
+            <div class="tracking-badge" id="trackingBadge">Venter på en hånd</div>
+            <div class="beat-countdown" id="beatCountdown" aria-live="assertive" hidden></div>
+            <div class="gesture-overlay" id="gestureOverlay" aria-label="Alternative håndkontroller">
+              <button class="gesture-zone lock-zone" id="lockZone" type="button">
+                <span class="zone-icon" aria-hidden="true">&#x2191;</span>
+                <span class="zone-label">LÅS</span>
+                <small>Venstre pegefinger</small>
+                <span class="zone-progress" aria-hidden="true"></span>
+              </button>
+              <div class="digit-keypad" id="digitKeypad" aria-label="Ciffertastatur til venstre pegefinger">
+                <span class="keypad-caption">VENSTRE PEGEFINGER</span>
+                <button class="digit-key" type="button" data-digit="1">1<span class="key-progress" aria-hidden="true"></span></button>
+                <button class="digit-key" type="button" data-digit="2">2<span class="key-progress" aria-hidden="true"></span></button>
+                <button class="digit-key" type="button" data-digit="3">3<span class="key-progress" aria-hidden="true"></span></button>
+                <button class="digit-key" type="button" data-digit="4">4<span class="key-progress" aria-hidden="true"></span></button>
+                <button class="digit-key" type="button" data-digit="5">5<span class="key-progress" aria-hidden="true"></span></button>
+                <button class="digit-key" type="button" data-digit="6">6<span class="key-progress" aria-hidden="true"></span></button>
+                <button class="digit-key" type="button" data-digit="7">7<span class="key-progress" aria-hidden="true"></span></button>
+                <button class="digit-key" type="button" data-digit="8">8<span class="key-progress" aria-hidden="true"></span></button>
+                <button class="digit-key" type="button" data-digit="9">9<span class="key-progress" aria-hidden="true"></span></button>
+                <button class="digit-key" type="button" data-digit="0">0<span class="key-progress" aria-hidden="true"></span></button>
+              </div>
+              <button class="gesture-zone reject-zone" id="rejectZone" type="button">
+                <span class="zone-icon" aria-hidden="true">&#x2715;</span>
+                <span class="zone-label">NEJ / SLET</span>
+                <small>Venstre pegefinger</small>
+                <span class="zone-progress" aria-hidden="true"></span>
+              </button>
+            </div>
+            <div class="celebration-layer" id="celebrationLayer" aria-live="polite"></div>
+          </div>
+
+          <div class="camera-footer">
+            <div class="detected-hands" id="detectedHands" aria-live="polite">
+              <span class="muted">Ingen hænder registreret</span>
+            </div>
+            <button class="button button-primary" id="startButton" type="button">Start kamera</button>
+          </div>
+        </section>
+
+        <section class="challenge-card panel" aria-label="Matematikopgave">
+          <div class="challenge-topline">
+            <div class="round-tag"><span id="roundNumber">RUNDE 01</span></div>
+            <div class="operation-tag" id="operationTag">PLUS</div>
+          </div>
+
+          <div class="beat-settings" id="beatSettings" hidden>
+            <div class="settings-field">
+              <label for="beatTableSelect">Vælg tabel</label>
+              <select id="beatTableSelect">
+                <option value="2">2-tabellen</option>
+                <option value="3" selected>3-tabellen</option>
+                <option value="4">4-tabellen</option>
+                <option value="5">5-tabellen</option>
+                <option value="6">6-tabellen</option>
+                <option value="7">7-tabellen</option>
+                <option value="8">8-tabellen</option>
+                <option value="9">9-tabellen</option>
+                <option value="10">10-tabellen</option>
+              </select>
+            </div>
+            <div class="settings-field">
+              <span class="settings-label">Sværhedsgrad</span>
+              <div class="difficulty-buttons" role="group" aria-label="Sværhedsgrad">
+                <button class="difficulty-button active" type="button" data-difficulty="easy">Let</button>
+                <button class="difficulty-button" type="button" data-difficulty="hard">Svær</button>
+              </div>
+            </div>
+            <div class="settings-field">
+              <span class="settings-label">Liv</span>
+              <button class="difficulty-button lives-toggle active" id="beatLivesToggle" type="button" aria-pressed="true">
+                <span id="beatLivesToggleLabel">Til</span><small id="beatLivesCount">3 liv</small>
+              </button>
+            </div>
+          </div>
+
+          <div class="hand-settings" id="handSettings">
+            <div class="settings-field">
+              <span class="settings-label">Niveau i Håndtegn</span>
+              <div class="difficulty-buttons hand-level-buttons" role="group" aria-label="Niveau i Håndtegn">
+                <button class="difficulty-button active" type="button" data-hand-level="1">Niveau 1<small>Let</small></button>
+                <button class="difficulty-button" type="button" data-hand-level="2">Niveau 2<small>Mellem</small></button>
+                <button class="difficulty-button" type="button" data-hand-level="3">Niveau 3<small>Svær</small></button>
+              </div>
+            </div>
+          </div>
+
+          <div class="equation-wrap">
+            <p class="eyebrow" id="challengeEyebrow">LØS OPGAVEN</p>
+            <div class="equation" id="equation" aria-live="polite">3 + 4 = ?</div>
+            <p class="equation-hint" id="equationHint">Vis et ciffer med højre hånd.</p>
+          </div>
+
+          <div class="input-display" aria-label="Dit nuværende svar">
+            <span class="input-label" id="inputLabel">DIT SVAR</span>
+            <strong id="inputValue">&mdash;</strong>
+          </div>
+
+          <div class="feedback-box info" id="feedbackBox" aria-live="polite">
+            <div class="feedback-icon" id="feedbackIcon">&#x2726;</div>
+            <div>
+              <strong id="feedbackTitle">Klar, når du er</strong>
+              <p id="feedbackText">Start kameraet, og hold dit svar roligt.</p>
+            </div>
+          </div>
+
+          <div class="progress-section">
+            <div class="progress-copy">
+              <span id="progressLabel">Venter på kameraet</span>
+              <span id="progressPercent">0%</span>
+            </div>
+            <div class="progress-track"><div class="progress-bar" id="progressBar"></div></div>
+          </div>
+
+          <button class="button button-quiet" id="newChallengeButton" type="button">Ny opgave</button>
+        </section>
+      </section>
+
+      <section class="guide-grid" id="handGuide" aria-label="Sådan spiller du Håndtegn">
+        <div class="guide-card panel">
+          <div class="guide-number">01</div>
+          <div>
+            <h3>Læs opgaven</h3>
+            <p>Vælg et niveau med plus, minus, gange og division. Opgaverne vises én ad gangen.</p>
+          </div>
+        </div>
+        <div class="guide-card panel">
+          <div class="guide-number">02</div>
+          <div>
+            <h3>Højre hånd viser</h3>
+            <p>Lav ASL-cifret med højre hånd, eller peg på et ciffer med venstre pegefinger. Ved tocifrede svar vises enerne først.</p>
+          </div>
+        </div>
+        <div class="guide-card panel">
+          <div class="guide-number">03</div>
+          <div>
+            <h3>Venstre hånd styrer</h3>
+            <p>Tommel op låser direkte. Tommel ned sletter efter et kort hold. Peg på LÅS eller NEJ / SLET som alternativ.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="guide-grid beat-guide" id="beatGuide" aria-label="Sådan spiller du BeatSaber" hidden>
+        <div class="guide-card panel">
+          <div class="guide-number">01</div>
+          <div>
+            <h3>Vælg din tabel</h3>
+            <p>Vælg en tabel fra 2 til 10 og prøv let eller svær rækkefølge.</p>
+          </div>
+        </div>
+        <div class="guide-card panel">
+          <div class="guide-number">02</div>
+          <div>
+            <h3>Sving lyssværdet</h3>
+            <p>Stræk pegefingeren. Den bliver til et lyssværd på kamerabilledet.</p>
+          </div>
+        </div>
+        <div class="guide-card panel">
+          <div class="guide-number">03</div>
+          <div>
+            <h3>Skær kun rigtigt</h3>
+            <p>Ramt et multiplum af tabellen for point. Forkerte kasser skal blive stående.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="pose-panel panel" id="posePanel" aria-labelledby="poseGuideTitle">
+        <div class="pose-copy">
+          <p class="eyebrow">ASL-OVERSIGT TIL HØJRE HÅND</p>
+          <h2 id="poseGuideTitle">Vis cifrene med højre hånd</h2>
+          <p>Brug tegnene til 1&ndash;9 herunder. Spillet aflæser ét ciffer ad gangen.</p>
+        </div>
+        <div class="sign-reference-layout">
+          <figure class="sign-chart">
+            <img src="assets/asl-numbers-1-10.png" alt="ASL-tal med højre hånd fra 1 til 10" />
+            <figcaption>Ved svar fra 10&ndash;99 viser du først enercifret og derefter tiercifret.</figcaption>
+          </figure>
+          <div class="sign-extra">
+            <article class="sign-note-card">
+              <svg viewBox="0 0 100 100" aria-hidden="true">
+                <path d="M28 76V48c0-9 7-16 16-16h11c11 0 20 9 20 20v22" />
+                <circle cx="54" cy="49" r="14" />
+                <path d="M39 83c8 6 23 6 31 0" />
+              </svg>
+              <div><strong>0</strong><span>Højre hånd danner et O</span></div>
+            </article>
+            <article class="sign-note-card lock-card">
+              <svg viewBox="0 0 100 100" aria-hidden="true">
+                <path d="M64 82H35c-8 0-14-6-14-14V48c0-7 8-11 14-7l8 5V19c0-7 5-12 12-12s12 5 12 12v24h9c9 0 15 7 13 16l-3 12c-2 7-9 11-22 11Z" />
+              </svg>
+              <div><strong>LÅS</strong><span>Venstre pegefinger på LÅS bekræfter</span></div>
+            </article>
+            <article class="sign-note-card delete-card">
+              <svg viewBox="0 0 100 100" aria-hidden="true">
+                <g transform="translate(0 100) scale(1 -1)">
+                  <path d="M64 82H35c-8 0-14-6-14-14V48c0-7 8-11 14-7l8 5V19c0-7 5-12 12-12s12 5 12 12v24h9c9 0 15 7 13 16l-3 12c-2 7-9 11-22 11Z" />
+                </g>
+              </svg>
+              <div><strong>SLET</strong><span>Venstre tommel ned eller pegefinger på NEJ / SLET sletter</span></div>
+            </article>
+          </div>
+        </div>
+      </section>
+      <footer class="footer-note">
+        <span class="privacy-dot"></span>
+        <span>Alt kører i denne browser. Ingen video forlader din enhed.</span>
+        <span class="footer-divider">&bull;</span>
+        <span>MediaPipe Hands &middot; lokal kørsel</span>
+      </footer>
+    </main>
+
+    <!-- MediaPipe Hands og modelfilerne ligger lokalt i ./vendor/mediapipe. -->
+    <script src="vendor/mediapipe/hands.js"></script>
+    <script src="app.js?v=20260810-beatlives-1"></script>
+  </body>
+</html>
