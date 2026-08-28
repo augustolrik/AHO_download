@@ -186,6 +186,10 @@
           ${downloadIcon()}<span>Hent mappe (ZIP)</span>
         </a>` : "";
     const archiveSize = group.archive ? formatSize(group.archive.size) : "";
+    const isOpen = Boolean(group.expanded);
+    const toggle = `<button class="folder-toggle" type="button" data-folder-toggle="${escapeHtml(group.id)}" aria-expanded="${isOpen}" aria-controls="folder-files-${escapeHtml(group.id)}">
+          <span>${isOpen ? "Luk mappe" : "Åbn mappe"}</span><span aria-hidden="true">${isOpen ? "⌃" : "⌄"}</span>
+        </button>`;
     return `<article class="file-group">
       <header class="group-header">
         <div class="group-title-wrap">
@@ -193,11 +197,12 @@
           <div><h3>${escapeHtml(group.name)}</h3>${description}</div>
         </div>
         <div class="group-actions">
+          ${toggle}
           ${archive}
           <span class="group-count">${group.files.length} ${group.files.length === 1 ? "fil" : "filer"}${archiveSize ? ` · ZIP ${escapeHtml(archiveSize)}` : ""}</span>
         </div>
       </header>
-      <ul class="file-list">${rows}</ul>
+      <ul class="file-list" id="folder-files-${escapeHtml(group.id)}" ${isOpen ? "" : "hidden"}>${rows}</ul>
     </article>`;
   }
 
@@ -213,7 +218,7 @@
         if (!query) return true;
         return [file.name, file.description, file.type, group.name].join(" ").toLocaleLowerCase("da-DK").includes(query);
       });
-      return files.length ? { ...group, files } : null;
+      return files.length ? { ...group, files, expanded: group.expanded || Boolean(query) } : null;
     }).filter(Boolean);
   }
 
@@ -287,6 +292,14 @@
   });
 
   elements.retry.addEventListener("click", loadFiles);
+
+  elements.groups.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-folder-toggle]");
+    if (!button) return;
+    const id = button.dataset.folderToggle;
+    state.groups = state.groups.map((group) => group.id === id ? { ...group, expanded: !group.expanded } : group);
+    render();
+  });
 
   document.addEventListener("keydown", (event) => {
     if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") {

@@ -211,6 +211,8 @@ kbd { position: absolute; right: 11px; padding: 3px 6px; color: var(--muted); ba
 
 .group-title-wrap { display: flex; align-items: flex-start; gap: 14px; }
 .group-actions { display: flex; flex: 0 0 auto; align-items: center; justify-content: flex-end; gap: 9px; }
+.folder-toggle { display: inline-flex; align-items: center; gap: 7px; min-height: 34px; padding: 7px 11px; color: var(--teal-dark); background: var(--white); border: 1px solid #a9d0cc; border-radius: 9px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap; }
+.folder-toggle:hover { background: var(--teal-pale); }
 
 .folder-icon { display: grid; flex: 0 0 auto; width: 42px; height: 42px; place-items: center; color: #ae403d; background: #fff0ef; border-radius: 12px; }
 .folder-icon { font-size: 21px; }
@@ -274,8 +276,10 @@ code { padding: 2px 5px; color: #d6eeeb; background: rgba(255, 255, 255, 0.08); 
   .controls { grid-template-columns: 1fr; }
   .group-header { padding-inline: 18px; }
   .group-actions { gap: 6px; }
+  .folder-toggle { padding-inline: 9px; }
   .folder-download-button { padding-inline: 9px; }
   .folder-download-button span { display: none; }
+  .folder-toggle span:first-child { display: none; }
   .file-row { align-items: flex-start; padding: 16px 18px; }
   .file-info { align-items: flex-start; }
   .download-button { padding-inline: 10px; }
