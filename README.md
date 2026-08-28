@@ -1,4 +1,4 @@
-# ASF – filer til studerende
+# Filer til studerende
 
 Dette er en enkel offentlig download-side til undervisningsfiler. Filer, der
 ligger direkte i repoets rod eller i undermapper, bliver vist på siden og kan
