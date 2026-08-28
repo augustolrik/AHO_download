@@ -1,4 +1,4 @@
-# Filer til studerende
+# ASF – filer til studerende
 
 Dette er en enkel offentlig download-side til undervisningsfiler. Filer, der
 ligger direkte i repoets rod eller i undermapper, bliver vist på siden og kan
@@ -16,9 +16,9 @@ hemmelige facitlister i repoet: GitHub Pages-siden er offentlig.
    udgiver siden til GitHub Pages.
 
 Filer med navne, der begynder med punktum, samt tekniske, aktive og midlertidige
-filer bliver automatisk udeladt. Almindelige undervisningsformater som PDF,
-Word, Excel, PowerPoint, billeder, lyd, video, STL, tekst og ZIP understøttes.
-Pak andre filtyper som ZIP, før du synkroniserer dem.
+filer bliver automatisk udeladt. Alle øvrige filtyper kommer med i
+downloadlisten. Hver fil kan hentes direkte, og hver hovedmappe får også en
+**Hent mappe (ZIP)**-knap, så eleverne kan hente alt i mappen på én gang.
 
 ## Første opsætning
 

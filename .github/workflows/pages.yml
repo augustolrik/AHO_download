@@ -30,6 +30,9 @@ jobs:
       - name: Opdater fillisten
         run: node .site/scripts/generate-index.mjs
 
+      - name: Lav ZIP-filer til mapper
+        run: node .site/scripts/generate-folder-archives.mjs
+
       - name: Pak den statiske side
         uses: actions/upload-pages-artifact@v3
         with:

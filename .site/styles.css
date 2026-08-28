@@ -210,6 +210,7 @@ kbd { position: absolute; right: 11px; padding: 3px 6px; color: var(--muted); ba
 .group-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; padding: 23px 26px 19px; border-bottom: 1px solid var(--line); }
 
 .group-title-wrap { display: flex; align-items: flex-start; gap: 14px; }
+.group-actions { display: flex; flex: 0 0 auto; align-items: center; justify-content: flex-end; gap: 9px; }
 
 .folder-icon { display: grid; flex: 0 0 auto; width: 42px; height: 42px; place-items: center; color: #ae403d; background: #fff0ef; border-radius: 12px; }
 .folder-icon { font-size: 21px; }
@@ -235,6 +236,9 @@ kbd { position: absolute; right: 11px; padding: 3px 6px; color: var(--muted); ba
 .download-button { font-size: 16px; }
 .download-button span { font-size: 13px; }
 .download-button:hover { color: var(--white); background: var(--teal); transform: translateY(-1px); }
+.folder-download-button { display: inline-flex; align-items: center; gap: 7px; min-height: 34px; padding: 7px 11px; color: var(--white); background: var(--teal); border: 1px solid var(--teal); border-radius: 9px; font-size: 15px; font-weight: 700; text-decoration: none; white-space: nowrap; transition: background 150ms ease, transform 150ms ease; }
+.folder-download-button span { font-size: 12px; }
+.folder-download-button:hover { background: var(--teal-dark); transform: translateY(-1px); }
 
 .state-panel { display: flex; align-items: flex-start; gap: 15px; padding: 27px; border: 1px solid var(--line); border-radius: var(--radius-md); }
 .state-panel-error { color: var(--ink); background: #fffaf7; border-color: #f2d8c7; }
@@ -269,6 +273,9 @@ code { padding: 2px 5px; color: #d6eeeb; background: rgba(255, 255, 255, 0.08); 
   .library-updated { margin-top: 10px; }
   .controls { grid-template-columns: 1fr; }
   .group-header { padding-inline: 18px; }
+  .group-actions { gap: 6px; }
+  .folder-download-button { padding-inline: 9px; }
+  .folder-download-button span { display: none; }
   .file-row { align-items: flex-start; padding: 16px 18px; }
   .file-info { align-items: flex-start; }
   .download-button { padding-inline: 10px; }

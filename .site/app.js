@@ -84,6 +84,12 @@
   }
 
   function normalizePayload(payload) {
+    const archiveByFolder = new Map((payload && Array.isArray(payload.archives) ? payload.archives : [])
+      .filter((archive) => archive && archive.folder && archive.url)
+      .map((archive) => [String(archive.folder), {
+        path: String(archive.url),
+        size: archive.size || "",
+      }]));
     let sourceGroups;
     if (Array.isArray(payload)) {
       sourceGroups = [{ name: "Alle filer", files: payload }];
@@ -103,6 +109,7 @@
         id: String(source.id || slugify(name)),
         name,
         description: String(source.description || "").trim(),
+        archive: archiveByFolder.get(name) || null,
         files
       };
     }).filter((group) => group.files.length > 0);
@@ -114,7 +121,9 @@
         if (!byFolder.has(file.folder)) byFolder.set(file.folder, []);
         byFolder.get(file.folder).push(file);
       });
-      return [...byFolder.entries()].map(([name, files]) => ({ id: slugify(name), name, description: "", files }));
+      return [...byFolder.entries()].map(([name, files]) => ({
+        id: slugify(name), name, description: "", archive: archiveByFolder.get(name) || null, files,
+      }));
     }
     return groups;
   }
@@ -173,13 +182,20 @@
       </li>`;
     }).join("");
 
+    const archive = group.archive ? `<a class="folder-download-button" href="${escapeHtml(safeHref(group.archive.path))}" download aria-label="Hent hele mappen ${escapeHtml(group.name)} som ZIP">
+          ${downloadIcon()}<span>Hent mappe (ZIP)</span>
+        </a>` : "";
+    const archiveSize = group.archive ? formatSize(group.archive.size) : "";
     return `<article class="file-group">
       <header class="group-header">
         <div class="group-title-wrap">
           <span class="folder-icon" aria-hidden="true">${folderIcon()}</span>
           <div><h3>${escapeHtml(group.name)}</h3>${description}</div>
         </div>
-        <span class="group-count">${group.files.length} ${group.files.length === 1 ? "fil" : "filer"}</span>
+        <div class="group-actions">
+          ${archive}
+          <span class="group-count">${group.files.length} ${group.files.length === 1 ? "fil" : "filer"}${archiveSize ? ` · ZIP ${escapeHtml(archiveSize)}` : ""}</span>
+        </div>
       </header>
       <ul class="file-list">${rows}</ul>
     </article>`;

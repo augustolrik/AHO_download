@@ -14,12 +14,6 @@ const technicalNames = new Set([
 const technicalDirectories = new Set([
   ".folder-style", ".git", ".github", ".openai", ".site-dist", "node_modules", "scripts",
 ]);
-const allowedExtensions = new Set([
-  ".7z", ".csv", ".doc", ".docx", ".gif", ".jpeg", ".jpg", ".m4a",
-  ".ggb", ".md", ".mov", ".mp3", ".mp4", ".odp", ".ods", ".odt", ".pdf", ".png",
-  ".ppt", ".pptx", ".rtf", ".stl", ".txt", ".wav", ".webm", ".webp",
-  ".sb3", ".xls", ".xlsx", ".zip",
-]);
 const maxFileSize = 95 * 1024 * 1024;
 const maxTotalSize = 900 * 1024 * 1024;
 
@@ -52,10 +46,6 @@ async function collectFiles(directory, relativeDirectory = "") {
     }
     if (!entry.isFile()) continue;
     const extension = path.extname(entry.name).toLowerCase();
-    if (!allowedExtensions.has(extension)) {
-      console.warn(`Springer over en ikke-understøttet fil: ${relativePath}`);
-      continue;
-    }
     const details = await stat(absolutePath);
     if (details.size > maxFileSize) {
       throw new Error(`${relativePath} er over 95 MB og kan ikke udgives via denne side.`);
