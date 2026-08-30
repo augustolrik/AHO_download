@@ -170,7 +170,7 @@ h1 { max-width: 610px; margin: 0; color: var(--ink); font-size: clamp(2.5rem, 5v
 .shape-dot-one { right: 0; bottom: 17px; }
 .shape-dot-two { bottom: 0; left: 20%; width: 7px; height: 7px; background: var(--teal); }
 
-.library-section { padding: 72px 0 88px; }
+.library-section { padding: 32px 0 64px; }
 
 .section-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 28px; }
 
@@ -264,13 +264,6 @@ code { padding: 2px 5px; color: #d6eeeb; background: rgba(255, 255, 255, 0.08); 
 @media (max-width: 720px) {
   .container { width: min(100% - 28px, 560px); }
   .header-inner { min-height: 67px; }
-  .hero-grid { display: block; min-height: 0; padding-block: 51px 25px; }
-  .hero-intro { font-size: 16px; }
-  .hero-shape { min-height: 190px; margin-top: 22px; }
-  .hero-card { top: 4px; right: 13%; width: 220px; }
-  .hero-card-front { padding: 21px; font-size: 18px; }
-  .hero-card-icon { width: 39px; height: 39px; font-size: 24px; }
-  .shape-star { right: 7%; }
   .section-heading { display: block; }
   .library-updated { margin-top: 10px; }
   .controls { grid-template-columns: 1fr; }
@@ -284,8 +277,6 @@ code { padding: 2px 5px; color: #d6eeeb; background: rgba(255, 255, 255, 0.08); 
   .file-info { align-items: flex-start; }
   .download-button { padding-inline: 10px; }
   .download-button span { display: none; }
-  .footer-inner { display: block; }
-  .footer-note { margin-top: 9px !important; text-align: left; }
 }
 
 @media (max-width: 420px) {
