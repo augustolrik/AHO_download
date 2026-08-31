@@ -69,8 +69,9 @@
   function normalizeFile(file, fallbackFolder) {
     const source = file && typeof file === "object" ? file : {};
     const path = String(source.url || source.path || source.href || "").trim();
+    const logicalPath = String(source.path || source.url || source.href || "").trim();
     const name = String(source.name || source.title || (path.split(/[\\/]/).pop()) || "Unavngivet fil").trim();
-    const folder = String(source.folder || folderFromPath(path) || fallbackFolder || "Andre filer").trim();
+    const folder = String(source.folder || folderFromPath(logicalPath) || fallbackFolder || "Andre filer").trim();
     const type = fileExtension(name, source.type);
     return {
       name,
