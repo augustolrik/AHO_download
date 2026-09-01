@@ -13,3 +13,7 @@ ehthumbs.db
 *.temp
 *.part
 *.crdownload
+
+# Tegne Spil udgives som GitHub Release, ikke som en almindelig Pages-fil.
+/Tegne_Spil/
+/Tegne Spil/

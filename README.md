@@ -29,3 +29,11 @@ Den skjulte mappe `.site` indeholder selve hjemmesiden. Ved udgivelse bygges en
 separat teknisk mappe, som kun indeholder siden og de godkendte studenterfiler.
 Tekniske filer bliver aldrig vist i downloadlisten. Siden har ingen
 uploadfunktion og kan hverken skrive til GitHub eller din computer.
+
+## Tegne Spil
+
+Programmet **Tegne Spil** ligger som en GitHub Release i stedet for i denne
+mappe. Det betyder, at programmet kan være større end GitHubs normale
+filgrænse. Udgiv den som en ZIP-fil med navnet `Tegne-Spil.zip`, der indeholder
+`Tegne Spil.exe` og `Toturial.dgm`. Downloadknappen på hjemmesiden peger altid
+på den nyeste Release.

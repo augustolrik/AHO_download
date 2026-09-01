@@ -14,6 +14,7 @@ const technicalNames = new Set([
 const technicalDirectories = new Set([
   ".folder-style", ".git", ".github", ".openai", ".site-dist", "node_modules", "scripts",
 ]);
+const releaseOnlyDirectories = new Set(["tegne_spil", "tegne spil"]);
 const maxFileSize = 95 * 1024 * 1024;
 const maxTotalSize = 900 * 1024 * 1024;
 
@@ -24,7 +25,7 @@ function compareNames(left, right) {
 function isTechnical(entry) {
   const lower = entry.name.toLowerCase();
   return entry.name.startsWith(".") || technicalNames.has(lower) ||
-    technicalDirectories.has(lower) || siteFiles.has(lower) ||
+    technicalDirectories.has(lower) || releaseOnlyDirectories.has(lower) || siteFiles.has(lower) ||
     entry.name.startsWith("~$") || /\.(?:tmp|temp|part|crdownload)$/i.test(entry.name);
 }
 
